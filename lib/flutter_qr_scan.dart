@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 import 'dart:ui';
 
@@ -21,7 +22,7 @@ class FlutterQrReader {
       );
       return rest;
     } catch (e) {
-      print(e);
+      log(e.toString());
       return null;
     }
   }
@@ -35,7 +36,7 @@ class QrReaderView extends StatefulWidget {
   final double? width;
   final double? height;
 
-  QrReaderView({
+  const QrReaderView({
     Key? key,
     this.width,
     this.height,
@@ -45,15 +46,10 @@ class QrReaderView extends StatefulWidget {
   }) : super(key: key);
 
   @override
-  _QrReaderViewState createState() => new _QrReaderViewState();
+  State<QrReaderView> createState() => _QrReaderViewState();
 }
 
 class _QrReaderViewState extends State<QrReaderView> {
-  @override
-  void initState() {
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     if (defaultTargetPlatform == TargetPlatform.android) {
@@ -68,7 +64,7 @@ class _QrReaderViewState extends State<QrReaderView> {
         creationParamsCodec: const StandardMessageCodec(),
         onPlatformViewCreated: _onPlatformViewCreated,
         gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
-          new Factory<OneSequenceGestureRecognizer>(() => new EagerGestureRecognizer()),
+          Factory<OneSequenceGestureRecognizer>(() => EagerGestureRecognizer()),
         ].toSet(),
       );
     } else if (defaultTargetPlatform == TargetPlatform.iOS) {
@@ -83,7 +79,7 @@ class _QrReaderViewState extends State<QrReaderView> {
         creationParamsCodec: const StandardMessageCodec(),
         onPlatformViewCreated: _onPlatformViewCreated,
         gestureRecognizers: <Factory<OneSequenceGestureRecognizer>>[
-          new Factory<OneSequenceGestureRecognizer>(() => new EagerGestureRecognizer()),
+          Factory<OneSequenceGestureRecognizer>(() => EagerGestureRecognizer()),
         ].toSet(),
       );
     } else {
@@ -104,11 +100,11 @@ class _QrReaderViewState extends State<QrReaderView> {
 typedef ReadChangeBack = void Function(String?, List<Offset>, String?);
 
 class QrReaderViewController {
-  final int id;
-  final MethodChannel _channel;
   QrReaderViewController(this.id) : _channel = MethodChannel('me.hetian.flutter_qr_reader.reader_view_$id') {
     _channel.setMethodCallHandler(_handleMessages);
   }
+  final int id;
+  final MethodChannel _channel;
   late ReadChangeBack onQrBack;
 
   Future _handleMessages(MethodCall call) async {

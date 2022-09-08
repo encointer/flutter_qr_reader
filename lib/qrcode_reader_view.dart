@@ -8,13 +8,7 @@ import 'package:image_picker/image_picker.dart';
 /// 使用前需已经获取相关权限
 /// Relevant privileges must be obtained before use
 class QrcodeReaderView extends StatefulWidget {
-  final Widget? headerWidget;
-  final Future Function(String?, String?) onScan;
-  final double scanBoxRatio;
-  final Color boxLineColor;
-  final Widget? helpWidget;
-  
-  QrcodeReaderView({
+  const QrcodeReaderView({
     Key? key,
     required this.onScan,
     this.headerWidget,
@@ -23,8 +17,14 @@ class QrcodeReaderView extends StatefulWidget {
     this.scanBoxRatio = 0.85,
   }) : super(key: key);
 
+  final Widget? headerWidget;
+  final Future Function(String?, String?) onScan;
+  final double scanBoxRatio;
+  final Color boxLineColor;
+  final Widget? helpWidget;
+
   @override
-  QrcodeReaderViewState createState() => new QrcodeReaderViewState();
+  State<QrcodeReaderView> createState() => QrcodeReaderViewState();
 }
 
 /// 扫码后的后续操作

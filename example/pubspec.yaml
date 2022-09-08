@@ -3,7 +3,8 @@ description: Demonstrates how to use the flutter_qr_scan plugin.
 publish_to: 'none'
 
 environment:
-  sdk: ">=2.2.2 <3.0.0"
+  sdk: ">=2.17.0 <3.0.0"
+  flutter: 3.0.4
 
 dependencies:
   flutter:
@@ -11,9 +12,9 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^0.1.2
-  permission_handler: ^7.2.0
-  image_picker: ^0.7.5+2
+  cupertino_icons: ^1.0.5
+  permission_handler: ^10.0.0
+  image_picker: ^0.8.5+3
 
 dev_dependencies:
   flutter_test:

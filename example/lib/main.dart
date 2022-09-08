@@ -1,15 +1,18 @@
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 import 'package:flutter_qr_scan/flutter_qr_scan.dart';
 import 'package:flutter_qr_scan_example/scanViewDemo.dart';
-import 'package:image_picker/image_picker.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 void main() => runApp(MyApp());
 
 class MyApp extends StatefulWidget {
+  const MyApp({Key? key}) : super(key: key);
+
   @override
   _MyAppState createState() => _MyAppState();
 }
@@ -27,21 +30,17 @@ class _MyAppState extends State<MyApp> {
 }
 
 class HomePage extends StatefulWidget {
-  HomePage({Key key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => new _HomePageState();
 }
 
 class _HomePageState extends State<HomePage> {
-  QrReaderViewController _controller;
+  QrReaderViewController? _controller;
   bool isOk = false;
-  String data;
-  String rawData;
-  @override
-  void initState() {
-    super.initState();
-  }
+  String? data;
+  String? rawData;
 
   @override
   Widget build(BuildContext context) {
@@ -52,57 +51,53 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            FlatButton(
+            ElevatedButton(
+              child: Text("请求权限"),
               onPressed: () async {
                 final status = await Permission.camera.request();
-                print(status);
+                log(status.toString());
                 if (status.isGranted) {
                   showDialog(
                     context: context,
-                    builder: (context) {
-                      return Dialog(
-                        child: Text("ok"),
-                      );
-                    },
+                    builder: (context) => Dialog(child: Text("ok")),
                   );
                   setState(() {
                     isOk = true;
                   });
                 }
               },
-              child: Text("请求权限"),
-              color: Colors.blue,
             ),
-            FlatButton(
-              onPressed: () async {
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => ScanViewDemo()));
-              },
+            ElevatedButton(
               child: Text("独立UI"),
+              onPressed: () async {
+                Navigator.push(context, MaterialPageRoute(builder: (context) => ScanViewDemo()));
+              },
             ),
-            FlatButton(
-                onPressed: () async {
-                  var image =
-                      await ImagePicker().getImage(source: ImageSource.gallery);
-                  if (image == null) return;
-                  final rest = await FlutterQrReader.imgScan(File(image.path));
-                  setState(() {
-                    data = rest;
-                  });
-                },
-                child: Text("识别图片")),
-            FlatButton(
-                onPressed: () {
-                  assert(_controller != null);
-                  _controller.setFlashlight();
-                },
-                child: Text("切换闪光灯")),
-            FlatButton(
-                onPressed: () {
-                  assert(_controller != null);
-                  _controller.startCamera(onScan);
-                },
-                child: Text("开始扫码（暂停后）")),
+            ElevatedButton(
+              onPressed: () async {
+                var image = await ImagePicker().pickImage(source: ImageSource.gallery);
+                if (image == null) return;
+                final rest = await FlutterQrReader.imgScan(File(image.path));
+                setState(() {
+                  data = rest;
+                });
+              },
+              child: Text("识别图片"),
+            ),
+            ElevatedButton(
+              child: Text("切换闪光灯"),
+              onPressed: () {
+                assert(_controller != null);
+                _controller?.setFlashlight();
+              },
+            ),
+            ElevatedButton(
+              child: Text("开始扫码（暂停后）"),
+              onPressed: () {
+                assert(_controller != null);
+                _controller?.startCamera(onScan);
+              },
+            ),
             if (data != null) Text('$data\nrawData: $rawData'),
             if (isOk)
               Container(
@@ -113,7 +108,7 @@ class _HomePageState extends State<HomePage> {
                   height: 350,
                   callback: (container) {
                     this._controller = container;
-                    _controller.startCamera(onScan);
+                    _controller?.startCamera(onScan);
                   },
                 ),
               )
@@ -123,18 +118,17 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  void onScan(String v, List<Offset> offsets, String raw) {
-    print([v, offsets, raw]);
+  void onScan(String? v, List<Offset> offsets, String? raw) {
+    debugPrint('${[v, offsets, raw]}');
     setState(() {
       data = v;
       rawData = raw;
     });
-    _controller.stopCamera();
+    _controller?.stopCamera();
   }
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
   }
 }

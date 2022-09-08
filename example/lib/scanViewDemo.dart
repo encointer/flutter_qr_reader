@@ -3,7 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_qr_scan/qrcode_reader_view.dart';
 
 class ScanViewDemo extends StatefulWidget {
-  ScanViewDemo({Key key}) : super(key: key);
+  const ScanViewDemo({Key? key}) : super(key: key);
 
   @override
   _ScanViewDemoState createState() => new _ScanViewDemoState();
@@ -11,14 +11,10 @@ class ScanViewDemo extends StatefulWidget {
 
 class _ScanViewDemoState extends State<ScanViewDemo> {
   GlobalKey<QrcodeReaderViewState> _key = GlobalKey();
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
-    return new Scaffold(
+    return Scaffold(
       body: QrcodeReaderView(
         key: _key,
         onScan: onScan,
@@ -30,7 +26,7 @@ class _ScanViewDemoState extends State<ScanViewDemo> {
     );
   }
 
-  Future onScan(String data, String rawData) async {
+  Future onScan(String? data, String? rawData) async {
     await showCupertinoDialog(
       context: context,
       builder: (context) {
@@ -46,11 +42,6 @@ class _ScanViewDemoState extends State<ScanViewDemo> {
         );
       },
     );
-    _key.currentState.startScan();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
+    _key.currentState?.startScan();
   }
 }

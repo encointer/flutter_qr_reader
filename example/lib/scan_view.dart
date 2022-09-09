@@ -16,12 +16,11 @@ class _ScanViewDemoState extends State<ScanViewDemo> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: QrcodeReaderView(
-        key: _key,
-        onScan: onScan,
-        headerWidget: AppBar(
-          backgroundColor: Colors.transparent,
-          elevation: 0.0,
+      appBar: AppBar(title: const Text('ScanViewDemo')),
+      body: SafeArea(
+        child: QrcodeReaderView(
+          key: _key,
+          onScan: onScan,
         ),
       ),
     );

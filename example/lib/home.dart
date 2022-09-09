@@ -45,9 +45,6 @@ class _HomePageState extends State<HomePage> {
                       );
                     },
                   );
-                  setState(() {
-                    isOk = true;
-                  });
                 }
               },
             ),
@@ -82,19 +79,25 @@ class _HomePageState extends State<HomePage> {
               onPressed: () => _controller?.startCamera(onScan),
             ),
             if (data != null) Text('$data\nrawData: $rawData'),
+            ElevatedButton(
+              child: const Text("Start scan"),
+              onPressed: () {
+                setState(() {
+                  isOk = !isOk;
+                });
+              },
+            ),
             isOk
-                ? Center(
-                    child: SizedBox(
+                ? SizedBox(
+                    width: 320,
+                    height: 350,
+                    child: QrReaderView(
                       width: 320,
                       height: 350,
-                      child: QrReaderView(
-                        width: 320,
-                        height: 350,
-                        callback: (val) {
-                          _controller = val;
-                          _controller?.startCamera(onScan);
-                        },
-                      ),
+                      callback: (val) {
+                        _controller = val;
+                        _controller?.startCamera(onScan);
+                      },
                     ),
                   )
                 : const SizedBox(),

@@ -249,11 +249,15 @@ class QrcodeReaderViewState extends State<QrcodeReaderView> with TickerProviderS
 }
 
 class QrScanBoxPainter extends CustomPainter {
+  const QrScanBoxPainter({
+    required this.animationValue,
+    required this.isForward,
+    this.boxLineColor,
+  });
+
   final double animationValue;
   final bool isForward;
   final Color? boxLineColor;
-
-  QrScanBoxPainter({required this.animationValue, required this.isForward, this.boxLineColor});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -271,7 +275,7 @@ class QrScanBoxPainter extends CustomPainter {
       ..color = Colors.white
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
-    final path = new Path();
+    final path = Path();
     // leftTop
     path.moveTo(0, 50);
     path.lineTo(0, 12);

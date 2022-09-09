@@ -25,79 +25,81 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: const Text('Plugin example app')),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Row(),
-          ElevatedButton(
-            child: const Text("Request Permission"),
-            onPressed: () async {
-              final status = await Permission.camera.request();
-              log(status.toString());
-              if (status.isGranted) {
-                await showDialog(
-                  context: context,
-                  builder: (context) {
-                    return const AlertDialog(
-                      title: Text("ok"),
-                      content: Text("ok"),
-                    );
-                  },
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Row(),
+            ElevatedButton(
+              child: const Text("Request Permission"),
+              onPressed: () async {
+                final status = await Permission.camera.request();
+                log(status.toString());
+                if (status.isGranted) {
+                  await showDialog(
+                    context: context,
+                    builder: (context) {
+                      return const AlertDialog(
+                        title: Text("ok"),
+                        content: Text("ok"),
+                      );
+                    },
+                  );
+                  setState(() {
+                    isOk = true;
+                  });
+                }
+              },
+            ),
+            ElevatedButton(
+              child: const Text("Standalone UI"),
+              onPressed: () async {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const ScanViewDemo(),
+                  ),
                 );
+              },
+            ),
+            ElevatedButton(
+              child: const Text("Identify Pictures"),
+              onPressed: () async {
+                var image = await ImagePicker().pickImage(source: ImageSource.gallery);
+                if (image == null) return;
+                final rest = await FlutterQrReader.imgScan(File(image.path));
                 setState(() {
-                  isOk = true;
+                  data = rest;
                 });
-              }
-            },
-          ),
-          ElevatedButton(
-            child: const Text("Standalone UI"),
-            onPressed: () async {
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const ScanViewDemo(),
-                ),
-              );
-            },
-          ),
-          ElevatedButton(
-            child: const Text("Identify Pictures"),
-            onPressed: () async {
-              var image = await ImagePicker().pickImage(source: ImageSource.gallery);
-              if (image == null) return;
-              final rest = await FlutterQrReader.imgScan(File(image.path));
-              setState(() {
-                data = rest;
-              });
-            },
-          ),
-          ElevatedButton(
-            child: const Text("Toggle Flash"),
-            onPressed: () => _controller?.setFlashlight(),
-          ),
-          ElevatedButton(
-            child: const Text("Start scanning code (after pause)"),
-            onPressed: () => _controller?.startCamera(onScan),
-          ),
-          if (data != null) Text('$data\nrawData: $rawData'),
-          isOk
-              ? Center(
-                  child: SizedBox(
-                    width: 320,
-                    height: 350,
-                    child: QrReaderView(
+              },
+            ),
+            ElevatedButton(
+              child: const Text("Toggle Flash"),
+              onPressed: () => _controller?.setFlashlight(),
+            ),
+            ElevatedButton(
+              child: const Text("Start scanning code (after pause)"),
+              onPressed: () => _controller?.startCamera(onScan),
+            ),
+            if (data != null) Text('$data\nrawData: $rawData'),
+            isOk
+                ? Center(
+                    child: SizedBox(
                       width: 320,
                       height: 350,
-                      callback: (val) {
-                        _controller = val;
-                        _controller?.startCamera(onScan);
-                      },
+                      child: QrReaderView(
+                        width: 320,
+                        height: 350,
+                        callback: (val) {
+                          _controller = val;
+                          _controller?.startCamera(onScan);
+                        },
+                      ),
                     ),
-                  ),
-                )
-              : const SizedBox(),
-        ],
+                  )
+                : const SizedBox(),
+          ],
+        ),
       ),
     );
   }

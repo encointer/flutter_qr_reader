@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:developer';
 import 'dart:io';
 
 import 'package:flutter/material.dart';
@@ -33,52 +34,46 @@ class QrcodeReaderView extends StatefulWidget {
 /// qrViewKey.currentState.startScan();
 /// ```
 class QrcodeReaderViewState extends State<QrcodeReaderView> with TickerProviderStateMixin {
-  late QrReaderViewController _controller;
-  AnimationController? _animationController;
-  bool? openFlashlight;
+  late final QrReaderViewController _controller;
+  late final AnimationController _animationController;
+  bool openFlashlight = false;
   Timer? _timer;
   @override
   void initState() {
     super.initState();
-    openFlashlight = false;
+    _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 1000));
     _initAnimation();
   }
 
   void _initAnimation() {
-    setState(() {
-      _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 1000));
-    });
-    _animationController!
+    _animationController
       ..addListener(_upState)
       ..addStatusListener((state) {
         if (state == AnimationStatus.completed) {
           _timer = Timer(Duration(seconds: 1), () {
-            _animationController?.reverse(from: 1.0);
+            _animationController.reverse(from: 1.0);
           });
         } else if (state == AnimationStatus.dismissed) {
           _timer = Timer(Duration(seconds: 1), () {
-            _animationController?.forward(from: 0.0);
+            _animationController.forward(from: 0.0);
           });
         }
       });
-    _animationController!.forward(from: 0.0);
+    _animationController.forward(from: 0.0);
   }
 
   void _clearAnimation() {
     _timer?.cancel();
-    if (_animationController != null) {
-      _animationController?.dispose();
-      _animationController = null;
-    }
+    _animationController.dispose();
   }
 
   void _upState() {
     setState(() {});
   }
 
-  void _onCreateController(QrReaderViewController controller) async {
+  Future<void> _onCreateController(QrReaderViewController controller) async {
     _controller = controller;
-    _controller.startCamera(_onQrBack);
+    await _controller.startCamera(_onQrBack);
   }
 
   bool isScan = false;
@@ -101,7 +96,7 @@ class QrcodeReaderViewState extends State<QrcodeReaderView> with TickerProviderS
   }
 
   Future<bool?> setFlashlight() async {
-    openFlashlight = await _controller.setFlashlight();
+    openFlashlight = await _controller.setFlashlight() ?? false;
     setState(() {});
     return openFlashlight;
   }
@@ -140,44 +135,47 @@ class QrcodeReaderViewState extends State<QrcodeReaderView> with TickerProviderS
         final qrScanSize = constraints.maxWidth * widget.scanBoxRatio;
         final mediaQuery = MediaQuery.of(context);
         if (constraints.maxHeight < qrScanSize * 1.5) {
-          print("建议高度与扫码区域高度比大于1.5");
+          log("建议高度与扫码区域高度比大于1.5");
         }
         return Stack(
           children: <Widget>[
             SizedBox(
-              width: constraints.maxWidth,
-              height: constraints.maxHeight,
-              child: QrReaderView(
-                width: constraints.maxWidth,
-                height: constraints.maxHeight,
-                callback: _onCreateController,
+              width: 200, // constraints.maxWidth,
+              height: 200, // constraints.maxHeight,
+              child: Stack(
+                children: [
+                  FlutterLogo(size: 300),
+                  QrReaderView(
+                    width: 200, // constraints.maxWidth,
+                    height: 200, // constraints.maxHeight,
+                    callback: _onCreateController,
+                  ),
+                  FlutterLogo(size: 700),
+                ],
               ),
             ),
             if (widget.headerWidget != null) widget.headerWidget!,
-            Positioned(
-              left: (constraints.maxWidth - qrScanSize) / 2,
-              top: (constraints.maxHeight - qrScanSize) * 0.333333,
-              child: CustomPaint(
-                painter: QrScanBoxPainter(
-                  boxLineColor: widget.boxLineColor,
-                  animationValue: _animationController?.value ?? 0,
-                  isForward: _animationController?.status == AnimationStatus.forward,
-                ),
-                child: SizedBox(
-                  width: qrScanSize,
-                  height: qrScanSize,
-                ),
-              ),
-            ),
-            Positioned(
-              top: (constraints.maxHeight - qrScanSize) * 0.333333 + qrScanSize + 24,
-              width: constraints.maxWidth,
-              child: Align(
-                alignment: Alignment.center,
-                child: DefaultTextStyle(
-                  style: TextStyle(color: Colors.white),
-                  child: widget.helpWidget ?? Text("请将二维码置于方框中"),
-                ),
+            Align(
+              alignment: Alignment.center,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  CustomPaint(
+                    painter: QrScanBoxPainter(
+                      boxLineColor: widget.boxLineColor,
+                      animationValue: _animationController.value,
+                      isForward: _animationController.status == AnimationStatus.forward,
+                    ),
+                    child: SizedBox(
+                      width: qrScanSize,
+                      height: qrScanSize,
+                    ),
+                  ),
+                  DefaultTextStyle(
+                    style: TextStyle(color: Colors.white),
+                    child: widget.helpWidget ?? Text("请将二维码置于方框中"),
+                  ),
+                ],
               ),
             ),
             Positioned(
@@ -188,7 +186,7 @@ class QrcodeReaderViewState extends State<QrcodeReaderView> with TickerProviderS
                 child: GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: setFlashlight,
-                  child: openFlashlight! ? flashOpen : flashClose,
+                  child: openFlashlight ? flashOpen : flashClose,
                 ),
               ),
             ),

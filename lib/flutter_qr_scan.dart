@@ -134,13 +134,13 @@ class QrReaderViewController {
   }
 
   // 开始扫码
-  Future startCamera(ReadChangeBack onQrBack) async {
+  Future<bool?> startCamera(ReadChangeBack onQrBack) async {
     this.onQrBack = onQrBack;
     return _channel.invokeMethod("startCamera");
   }
 
   // 结束扫码
-  Future stopCamera() async {
+  Future<bool?> stopCamera() async {
     return _channel.invokeMethod("stopCamera");
   }
 }

@@ -31,7 +31,7 @@ class _HomePageState extends State<HomePage> {
           children: [
             Row(),
             ElevatedButton(
-              child: const Text("Request Permission"),
+              child: const Text("请求权限"),
               onPressed: () async {
                 final status = await Permission.camera.request();
                 log(status.toString());
@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             ElevatedButton(
-              child: const Text("Standalone UI"),
+              child: const Text("独立UI"),
               onPressed: () async {
                 Navigator.push(
                   context,
@@ -60,7 +60,7 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             ElevatedButton(
-              child: const Text("Identify Pictures"),
+              child: const Text("识别图片"),
               onPressed: () async {
                 var image = await ImagePicker().pickImage(source: ImageSource.gallery);
                 if (image == null) return;
@@ -71,11 +71,11 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             ElevatedButton(
-              child: const Text("Toggle Flash"),
+              child: const Text("切换闪光灯"),
               onPressed: () => _controller?.setFlashlight(),
             ),
             ElevatedButton(
-              child: const Text("Start scanning code (after pause)"),
+              child: const Text("开始扫码（暂停后)"),
               onPressed: () => _controller?.startCamera(onScan),
             ),
             if (data != null) Text('$data\nrawData: $rawData'),

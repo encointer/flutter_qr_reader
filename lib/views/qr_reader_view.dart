@@ -1,9 +1,8 @@
 import 'dart:async';
 import 'dart:developer';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+import 'package:flutter_qr_scan/views/qr_reader_view_mixin.dart';
 
 import 'package:flutter_qr_scan/flutter_qr_reader.dart';
 
@@ -34,102 +33,16 @@ class QrcodeReaderView extends StatefulWidget {
 /// GlobalKey<QrcodeReaderViewState> qrViewKey = GlobalKey();
 /// qrViewKey.currentState.startScan();
 /// ```
-class QrcodeReaderViewState extends State<QrcodeReaderView> with TickerProviderStateMixin {
-  late final QrReaderViewController _controller;
-  late final AnimationController _animationController;
-  bool openFlashlight = false;
-  Timer? _timer;
+class QrcodeReaderViewState extends State<QrcodeReaderView> with TickerProviderStateMixin, QrReaderViewMixin {
   @override
   void initState() {
     super.initState();
-    _animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 1000));
-    _initAnimation();
-  }
-
-  void _initAnimation() {
-    _animationController
-      ..addListener(_upState)
-      ..addStatusListener((state) {
-        if (state == AnimationStatus.completed) {
-          _timer = Timer(Duration(seconds: 1), () {
-            _animationController.reverse(from: 1.0);
-          });
-        } else if (state == AnimationStatus.dismissed) {
-          _timer = Timer(Duration(seconds: 1), () {
-            _animationController.forward(from: 0.0);
-          });
-        }
-      });
-    _animationController.forward(from: 0.0);
-  }
-
-  void _clearAnimation() {
-    _timer?.cancel();
-    _animationController.dispose();
-  }
-
-  void _upState() {
-    setState(() {});
-  }
-
-  Future<void> _onCreateController(QrReaderViewController controller) async {
-    _controller = controller;
-    await _controller.startCamera(_onQrBack);
-  }
-
-  bool isScan = false;
-  Future _onQrBack(data, _, rawData) async {
-    if (isScan == true) return;
-    isScan = true;
-    stopScan();
-    await widget.onScan(data, rawData);
-  }
-
-  void startScan() {
-    isScan = false;
-    _controller.startCamera(_onQrBack);
-    _initAnimation();
-  }
-
-  void stopScan() {
-    _clearAnimation();
-    _controller.stopCamera();
-  }
-
-  Future<bool?> setFlashlight() async {
-    openFlashlight = await _controller.setFlashlight() ?? false;
-    setState(() {});
-    return openFlashlight;
-  }
-
-  Future _scanImage() async {
-    stopScan();
-    var image = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (image == null) {
-      startScan();
-      return;
-    }
-    final rest = await FlutterQrReader.imgScan(File(image.path));
-    await widget.onScan(rest, '');
-    startScan();
+    animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 1000));
+    initAnimation();
   }
 
   @override
   Widget build(BuildContext context) {
-    final flashOpen = Image.asset(
-      "assets/tool_flashlight_open.png",
-      package: "flutter_qr_scan",
-      width: 35,
-      height: 35,
-      color: Colors.white,
-    );
-    final flashClose = Image.asset(
-      "assets/tool_flashlight_close.png",
-      package: "flutter_qr_scan",
-      width: 35,
-      height: 35,
-      color: Colors.white,
-    );
     return Material(
       color: Colors.black,
       child: LayoutBuilder(builder: (context, constraints) {
@@ -141,18 +54,12 @@ class QrcodeReaderViewState extends State<QrcodeReaderView> with TickerProviderS
         return Stack(
           children: <Widget>[
             SizedBox(
-              width: 200, // constraints.maxWidth,
-              height: 200, // constraints.maxHeight,
-              child: Stack(
-                children: [
-                  FlutterLogo(size: 300),
-                  QrReaderView(
-                    width: 200, // constraints.maxWidth,
-                    height: 200, // constraints.maxHeight,
-                    callback: _onCreateController,
-                  ),
-                  FlutterLogo(size: 700),
-                ],
+              width: constraints.maxWidth,
+              height: constraints.maxHeight,
+              child: QrReaderView(
+                width: constraints.maxWidth,
+                height: constraints.maxHeight,
+                callback: onCreateController,
               ),
             ),
             if (widget.headerWidget != null) widget.headerWidget!,
@@ -164,8 +71,8 @@ class QrcodeReaderViewState extends State<QrcodeReaderView> with TickerProviderS
                   CustomPaint(
                     painter: QrScanBoxPainter(
                       boxLineColor: widget.boxLineColor,
-                      animationValue: _animationController.value,
-                      isForward: _animationController.status == AnimationStatus.forward,
+                      animationValue: animationController.value,
+                      isForward: animationController.status == AnimationStatus.forward,
                     ),
                     child: SizedBox(
                       width: qrScanSize,
@@ -187,7 +94,13 @@ class QrcodeReaderViewState extends State<QrcodeReaderView> with TickerProviderS
                 child: GestureDetector(
                   behavior: HitTestBehavior.translucent,
                   onTap: setFlashlight,
-                  child: openFlashlight ? flashOpen : flashClose,
+                  child: Image.asset(
+                    "assets/${openFlashlight ? flashOpen : flashClose}",
+                    package: "flutter_qr_scan",
+                    width: 35,
+                    height: 35,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
@@ -200,7 +113,7 @@ class QrcodeReaderViewState extends State<QrcodeReaderView> with TickerProviderS
                 children: <Widget>[
                   GestureDetector(
                     behavior: HitTestBehavior.translucent,
-                    onTap: _scanImage,
+                    onTap: scanImage,
                     child: Container(
                       width: 45,
                       height: 45,
@@ -241,8 +154,5 @@ class QrcodeReaderViewState extends State<QrcodeReaderView> with TickerProviderS
   }
 
   @override
-  void dispose() {
-    _clearAnimation();
-    super.dispose();
-  }
+  Future Function(String? p1, String? p2) get onScan => widget.onScan;
 }

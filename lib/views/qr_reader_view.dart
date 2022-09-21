@@ -16,6 +16,7 @@ class QrcodeReaderView extends StatefulWidget {
     this.boxLineColor = Colors.cyanAccent,
     this.helpWidget,
     this.scanBoxRatio = 0.85,
+    this.text,
   }) : super(key: key);
 
   final Widget? headerWidget;
@@ -23,6 +24,7 @@ class QrcodeReaderView extends StatefulWidget {
   final double scanBoxRatio;
   final Color boxLineColor;
   final Widget? helpWidget;
+  final String? text;
 
   @override
   State<QrcodeReaderView> createState() => QrcodeReaderViewState();
@@ -81,7 +83,7 @@ class QrcodeReaderViewState extends State<QrcodeReaderView> with TickerProviderS
                   ),
                   DefaultTextStyle(
                     style: TextStyle(color: Colors.white),
-                    child: widget.helpWidget ?? Text("请将二维码置于方框中"),
+                    child: widget.helpWidget ?? Text("${widget.text ?? '请将二维码置于方框中'}"),
                   ),
                 ],
               ),

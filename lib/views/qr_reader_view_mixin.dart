@@ -36,8 +36,8 @@ mixin QrReaderViewMixin<T extends StatefulWidget> on State<T> {
   }
 
   void clearAnimation() {
-    timer?.cancel();
     animationController.dispose();
+    timer?.cancel();
   }
 
   void _upState() {
@@ -46,25 +46,25 @@ mixin QrReaderViewMixin<T extends StatefulWidget> on State<T> {
 
   Future<void> onCreateController(QrReaderViewController qrReaderViewController) async {
     controller = qrReaderViewController;
-    await controller.startCamera(_onQrBack);
+    controller.startCamera(_onQrBack);
   }
 
   Future _onQrBack(data, _, rawData) async {
     if (isScan == true) return;
     isScan = true;
-    await stopScan();
+    stopScan();
     await onScan(data, rawData);
   }
 
-  Future<void> startScan()async {
+  void startScan() {
     isScan = false;
-    await controller.startCamera(_onQrBack);
+    controller.startCamera(_onQrBack);
     initAnimation();
   }
 
-  Future<void> stopScan() async{
+  void stopScan() {
     clearAnimation();
-    await controller.stopCamera();
+    controller.stopCamera();
   }
 
   Future<bool?> setFlashlight() async {
@@ -82,7 +82,7 @@ mixin QrReaderViewMixin<T extends StatefulWidget> on State<T> {
     }
     final rest = await FlutterQrReader.imgScan(File(image.path));
     await onScan(rest, '');
-    await startScan();
+    startScan();
   }
 
   @override

@@ -50,9 +50,10 @@ class _HomePageState extends State<HomePage> {
             ElevatedButton(
               child: const Text("独立UI"),
               onPressed: () async {
-                Navigator.push(
+                // ignore: unused_local_variable
+                final data = await Navigator.push(
                   context,
-                  MaterialPageRoute(
+                  MaterialPageRoute<String?>(
                     builder: (context) => const ScanViewDemo(),
                   ),
                 );

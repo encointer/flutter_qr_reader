@@ -15,7 +15,17 @@ mixin QrReaderViewMixin<T extends StatefulWidget> on State<T> {
   final flashOpen = 'tool_flashlight_open.png';
   final flashClose = 'tool_flashlight_close.png';
 
-  Future Function(String?, String?) get onScan;
+  /// if after onscan call navigate pop return true else false
+  /// [bool] is true call animate dispose method
+  Future<void> Function(String?, String?) get onScan;
+  TickerProvider get vsync;
+
+  @override
+  void initState() {
+    super.initState();
+    animationController = AnimationController(vsync: vsync, duration: Duration(milliseconds: 1000));
+    initAnimation();
+  }
 
   void initAnimation() {
     animationController
@@ -53,15 +63,18 @@ mixin QrReaderViewMixin<T extends StatefulWidget> on State<T> {
   Future _onQrBack(data, _, rawData) async {
     if (isScan == true) return;
     isScan = true;
-    stopScan();
+    // stopScan();
     await onScan(data, rawData);
+    isScan = false;
+    // setState(() {});
+    print('=========>01 $isScan');
   }
 
-  void startScan() {
-    isScan = false;
-    controller.startCamera(_onQrBack);
-    initAnimation();
-  }
+  // void startScan() {
+  //   isScan = false;
+  //   controller.startCamera(_onQrBack);
+  //   initAnimation();
+  // }
 
   void stopScan() {
     clearAnimation();

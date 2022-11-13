@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_qr_scan/flutter_qr_reader.dart';
 
-
 class ScanViewDemo extends StatefulWidget {
   const ScanViewDemo({Key? key}) : super(key: key);
 
@@ -26,7 +25,7 @@ class _ScanViewDemoState extends State<ScanViewDemo> {
     );
   }
 
-  Future onScan(String? data, String? rawData) async {
+  Future<void> onScan(String? data, String? rawData) async {
     await showCupertinoDialog(
       context: context,
       builder: (context) {
@@ -42,6 +41,6 @@ class _ScanViewDemoState extends State<ScanViewDemo> {
         );
       },
     );
-    _key.currentState?.startScan();
+    // _key.currentState?.startScan();
   }
 }

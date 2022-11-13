@@ -20,7 +20,7 @@ class QrcodeReaderView extends StatefulWidget {
   }) : super(key: key);
 
   final Widget? headerWidget;
-  final Future Function(String?, String?) onScan;
+  final Future<void> Function(String?, String?) onScan;
   final double scanBoxRatio;
   final Color boxLineColor;
   final Widget? helpWidget;
@@ -36,13 +36,6 @@ class QrcodeReaderView extends StatefulWidget {
 /// qrViewKey.currentState.startScan();
 /// ```
 class QrcodeReaderViewState extends State<QrcodeReaderView> with TickerProviderStateMixin, QrReaderViewMixin {
-  @override
-  void initState() {
-    super.initState();
-    animationController = AnimationController(vsync: this, duration: Duration(milliseconds: 1000));
-    initAnimation();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Material(
@@ -156,5 +149,8 @@ class QrcodeReaderViewState extends State<QrcodeReaderView> with TickerProviderS
   }
 
   @override
-  Future Function(String? p1, String? p2) get onScan => widget.onScan;
+  Future<void> Function(String? p1, String? p2) get onScan => widget.onScan;
+
+  @override
+  TickerProvider get vsync => this;
 }

@@ -106,22 +106,6 @@ class QrcodeReaderViewState extends State<QrcodeReaderView> with TickerProviderS
                 crossAxisAlignment: CrossAxisAlignment.center,
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  // GestureDetector(
-                  //   behavior: HitTestBehavior.translucent,
-                  //   onTap: scanImage,
-                  //   child: Container(
-                  //     width: 45,
-                  //     height: 45,
-                  //     alignment: Alignment.center,
-                  //     child: Image.asset(
-                  //       "assets/tool_img.png",
-                  //       package: "flutter_qr_scan",
-                  //       width: 25,
-                  //       height: 25,
-                  //       color: Colors.white54,
-                  //     ),
-                  //   ),
-                  // ),
                   Container(
                     width: 80,
                     height: 80,
@@ -138,7 +122,6 @@ class QrcodeReaderViewState extends State<QrcodeReaderView> with TickerProviderS
                       color: Colors.white54,
                     ),
                   ),
-                  // SizedBox(width: 45, height: 45),
                 ],
               ),
             )

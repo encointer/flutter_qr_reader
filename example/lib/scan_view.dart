@@ -41,6 +41,5 @@ class _ScanViewDemoState extends State<ScanViewDemo> {
         );
       },
     );
-    // _key.currentState?.startScan();
   }
 }

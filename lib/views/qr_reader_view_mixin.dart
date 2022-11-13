@@ -61,7 +61,7 @@ mixin QrReaderViewMixin<T extends StatefulWidget> on State<T> {
     if (isScan == true) return;
     isScan = true;
     await onScan(data, rawData);
-    await Future.delayed(Duration(microseconds: 2000));
+    await Future.delayed(Duration(seconds: 2));
     isScan = false;
   }
 

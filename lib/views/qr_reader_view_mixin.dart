@@ -1,9 +1,8 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_qr_scan/flutter_qr_reader.dart';
-import 'package:image_picker/image_picker.dart';
+// import 'package:image_picker/image_picker.dart';
 
 mixin QrReaderViewMixin<T extends StatefulWidget> on State<T> {
   late QrReaderViewController controller;
@@ -36,7 +35,9 @@ mixin QrReaderViewMixin<T extends StatefulWidget> on State<T> {
   }
 
   void clearAnimation() {
-    animationController.dispose();
+    animationController
+      ..stop()
+      ..dispose();
     timer?.cancel();
   }
 
@@ -73,17 +74,17 @@ mixin QrReaderViewMixin<T extends StatefulWidget> on State<T> {
     return openFlashlight;
   }
 
-  Future<void> scanImage() async {
-    stopScan();
-    var image = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (image == null) {
-      startScan();
-      return;
-    }
-    final rest = await FlutterQrReader.imgScan(File(image.path));
-    await onScan(rest, '');
-    startScan();
-  }
+  // Future<void> scanImage() async {
+  //   stopScan();
+  //   var image = await ImagePicker().pickImage(source: ImageSource.gallery);
+  //   if (image == null) {
+  //     startScan();
+  //     return;
+  //   }
+  //   final rest = await FlutterQrReader.imgScan(File(image.path));
+  //   await onScan(rest, '');
+  //   startScan();
+  // }
 
   @override
   void dispose() {

@@ -14,7 +14,7 @@ dependencies:
 
   cupertino_icons: ^1.0.2
   permission_handler: ^10.0.0
-  image_picker: ^0.8.5+3
+  # image_picker: ^0.8.5+3
   flutter_qr_scan:
     path: ../
 

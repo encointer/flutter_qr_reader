@@ -1,9 +1,7 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_qr_scan/flutter_qr_reader.dart';
-import 'package:image_picker/image_picker.dart';
 
 mixin QrReaderViewMixin<T extends StatefulWidget> on State<T> {
   late QrReaderViewController controller;
@@ -16,7 +14,15 @@ mixin QrReaderViewMixin<T extends StatefulWidget> on State<T> {
   final flashOpen = 'tool_flashlight_open.png';
   final flashClose = 'tool_flashlight_close.png';
 
-  Future Function(String?, String?) get onScan;
+  Future<void> Function(String?, String?) get onScan;
+  TickerProvider get vsync;
+
+  @override
+  void initState() {
+    super.initState();
+    animationController = AnimationController(vsync: vsync, duration: Duration(milliseconds: 1000));
+    initAnimation();
+  }
 
   void initAnimation() {
     animationController
@@ -36,7 +42,9 @@ mixin QrReaderViewMixin<T extends StatefulWidget> on State<T> {
   }
 
   void clearAnimation() {
-    animationController.dispose();
+    animationController
+      ..stop()
+      ..dispose();
     timer?.cancel();
   }
 
@@ -52,14 +60,9 @@ mixin QrReaderViewMixin<T extends StatefulWidget> on State<T> {
   Future _onQrBack(data, _, rawData) async {
     if (isScan == true) return;
     isScan = true;
-    stopScan();
     await onScan(data, rawData);
-  }
-
-  void startScan() {
+    await Future.delayed(Duration(seconds: 2));
     isScan = false;
-    controller.startCamera(_onQrBack);
-    initAnimation();
   }
 
   void stopScan() {
@@ -71,18 +74,6 @@ mixin QrReaderViewMixin<T extends StatefulWidget> on State<T> {
     openFlashlight = await controller.setFlashlight() ?? false;
     setState(() {});
     return openFlashlight;
-  }
-
-  Future<void> scanImage() async {
-    stopScan();
-    var image = await ImagePicker().pickImage(source: ImageSource.gallery);
-    if (image == null) {
-      startScan();
-      return;
-    }
-    final rest = await FlutterQrReader.imgScan(File(image.path));
-    await onScan(rest, '');
-    startScan();
   }
 
   @override

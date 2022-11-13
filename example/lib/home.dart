@@ -1,12 +1,11 @@
 import 'dart:developer';
-import 'dart:io';
+// import 'dart:io';
 
 import 'package:example/scan_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_qr_scan/flutter_qr_reader.dart';
-import 'package:image_picker/image_picker.dart';
+// import 'package:image_picker/image_picker.dart';
 import 'package:permission_handler/permission_handler.dart';
-
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -51,25 +50,26 @@ class _HomePageState extends State<HomePage> {
             ElevatedButton(
               child: const Text("独立UI"),
               onPressed: () async {
-                Navigator.push(
+                // ignore: unused_local_variable
+                final data = await Navigator.push(
                   context,
-                  MaterialPageRoute(
+                  MaterialPageRoute<String?>(
                     builder: (context) => const ScanViewDemo(),
                   ),
                 );
               },
             ),
-            ElevatedButton(
-              child: const Text("识别图片"),
-              onPressed: () async {
-                var image = await ImagePicker().pickImage(source: ImageSource.gallery);
-                if (image == null) return;
-                final rest = await FlutterQrReader.imgScan(File(image.path));
-                setState(() {
-                  data = rest;
-                });
-              },
-            ),
+            // ElevatedButton(
+            //   child: const Text("识别图片"),
+            //   onPressed: () async {
+            //     var image = await ImagePicker().pickImage(source: ImageSource.gallery);
+            //     if (image == null) return;
+            //     final rest = await FlutterQrReader.imgScan(File(image.path));
+            //     setState(() {
+            //       data = rest;
+            //     });
+            //   },
+            // ),
             ElevatedButton(
               child: const Text("切换闪光灯"),
               onPressed: () => _controller?.setFlashlight(),

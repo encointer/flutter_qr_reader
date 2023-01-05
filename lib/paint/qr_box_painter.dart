@@ -13,7 +13,7 @@ class QrScanBoxPainter extends CustomPainter {
 
   @override
   void paint(Canvas canvas, Size size) {
-    final borderRadius = BorderRadius.all(Radius.circular(12)).toRRect(
+    final borderRadius = const BorderRadius.all(Radius.circular(12)).toRRect(
       Rect.fromLTWH(0, 0, size.width, size.height),
     );
     canvas.drawRRect(
@@ -27,43 +27,44 @@ class QrScanBoxPainter extends CustomPainter {
       ..color = Colors.white
       ..style = PaintingStyle.stroke
       ..strokeWidth = 2;
-    final path = Path();
-    // leftTop
-    path.moveTo(0, 50);
-    path.lineTo(0, 12);
-    path.quadraticBezierTo(0, 0, 12, 0);
-    path.lineTo(50, 0);
-    // rightTop
-    path.moveTo(size.width - 50, 0);
-    path.lineTo(size.width - 12, 0);
-    path.quadraticBezierTo(size.width, 0, size.width, 12);
-    path.lineTo(size.width, 50);
-    // rightBottom
-    path.moveTo(size.width, size.height - 50);
-    path.lineTo(size.width, size.height - 12);
-    path.quadraticBezierTo(size.width, size.height, size.width - 12, size.height);
-    path.lineTo(size.width - 50, size.height);
-    // leftBottom
-    path.moveTo(50, size.height);
-    path.lineTo(12, size.height);
-    path.quadraticBezierTo(0, size.height, 0, size.height - 12);
-    path.lineTo(0, size.height - 50);
+    final path = Path()
+      // leftTop
+      ..moveTo(0, 50)
+      ..lineTo(0, 12)
+      ..quadraticBezierTo(0, 0, 12, 0)
+      ..lineTo(50, 0)
+      // rightTop
+      ..moveTo(size.width - 50, 0)
+      ..lineTo(size.width - 12, 0)
+      ..quadraticBezierTo(size.width, 0, size.width, 12)
+      ..lineTo(size.width, 50)
+      // rightBottom
+      ..moveTo(size.width, size.height - 50)
+      ..lineTo(size.width, size.height - 12)
+      ..quadraticBezierTo(size.width, size.height, size.width - 12, size.height)
+      ..lineTo(size.width - 50, size.height)
+      // leftBottom
+      ..moveTo(50, size.height)
+      ..lineTo(12, size.height)
+      ..quadraticBezierTo(0, size.height, 0, size.height - 12)
+      ..lineTo(0, size.height - 50);
 
-    canvas.drawPath(path, borderPaint);
-
-    canvas.clipRRect(BorderRadius.all(Radius.circular(12)).toRRect(Offset.zero & size));
+    canvas
+      ..drawPath(path, borderPaint)
+      ..clipRRect(const BorderRadius.all(Radius.circular(12)).toRRect(Offset.zero & size));
 
     // 绘制横向网格
     final linePaint = Paint();
     final lineSize = size.height * 0.45;
     final leftPress = (size.height + lineSize) * animationValue - lineSize;
-    linePaint.style = PaintingStyle.stroke;
-    linePaint.shader = LinearGradient(
-      colors: [Colors.transparent, boxLineColor!],
-      begin: isForward ? Alignment.topCenter : Alignment(0.0, 2.0),
-      end: isForward ? Alignment(0.0, 0.5) : Alignment.topCenter,
-    ).createShader(Rect.fromLTWH(0, leftPress, size.width, lineSize));
-    for (int i = 0; i < size.height / 5; i++) {
+    linePaint
+      ..style = PaintingStyle.stroke
+      ..shader = LinearGradient(
+        colors: [Colors.transparent, boxLineColor!],
+        begin: isForward ? Alignment.topCenter : const Alignment(0, 2),
+        end: isForward ? const Alignment(0, 0.5) : Alignment.topCenter,
+      ).createShader(Rect.fromLTWH(0, leftPress, size.width, lineSize));
+    for (var i = 0; i < size.height / 5; i++) {
       canvas.drawLine(
         Offset(
           i * 5.0,
@@ -73,7 +74,7 @@ class QrScanBoxPainter extends CustomPainter {
         linePaint,
       );
     }
-    for (int i = 0; i < lineSize / 5; i++) {
+    for (var i = 0; i < lineSize / 5; i++) {
       canvas.drawLine(
         Offset(0, leftPress + i * 5.0),
         Offset(

@@ -6,7 +6,7 @@ publish_to: "none"
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.17.6 <3.0.0"
+  sdk: ">=2.18.5 <3.0.0"
 
 dependencies:
   flutter:
@@ -14,7 +14,6 @@ dependencies:
 
   cupertino_icons: ^1.0.2
   permission_handler: ^10.0.0
-  # image_picker: ^0.8.5+3
   flutter_qr_scan:
     path: ../
 

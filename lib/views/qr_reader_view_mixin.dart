@@ -41,15 +41,13 @@ mixin QrReaderViewMixin<T extends StatefulWidget> on State<T> {
     animationController.forward(from: 0.0);
   }
 
-  void clearAnimation() {
-    animationController
-      ..stop()
-      ..dispose();
+  void clearAnimation() async {
+    animationController.dispose();
     timer?.cancel();
   }
 
   void _upState() {
-    setState(() {});
+    if (mounted) setState(() {});
   }
 
   Future<void> onCreateController(QrReaderViewController qrReaderViewController) async {
@@ -65,10 +63,10 @@ mixin QrReaderViewMixin<T extends StatefulWidget> on State<T> {
     isScan = false;
   }
 
-  void stopScan() {
-    clearAnimation();
-    controller.stopCamera();
-  }
+  // void stopScan() {
+  //   clearAnimation();
+  //   controller.stopCamera();
+  // }
 
   Future<bool?> setFlashlight() async {
     openFlashlight = await controller.setFlashlight() ?? false;

@@ -19,7 +19,10 @@ class QrcodeReaderView extends StatefulWidget {
   });
 
   final Widget? headerWidget;
-  final Future<void> Function(String?, String?) onScan;
+
+  /// if return is `true` controller will stop camera
+  /// if `false` controller continue work
+  final Future<bool> Function(String?, String?) onScan;
   final double scanBoxRatio;
   final Color boxLineColor;
   final Widget? helpWidget;
@@ -130,7 +133,7 @@ class QrcodeReaderViewState extends State<QrcodeReaderView> with TickerProviderS
   }
 
   @override
-  Future<void> Function(String? p1, String? p2) get onScan => widget.onScan;
+  Future<bool> Function(String? p1, String? p2) get onScan => widget.onScan;
 
   @override
   TickerProvider get vsync => this;

@@ -25,9 +25,10 @@ class _ScanViewDemoState extends State<ScanViewDemo> {
     );
   }
 
-  Future<void> onScan(String? data, String? rawData) async {
+  Future<bool> onScan(String? data, String? rawData) async {
     if (data != null && data.contains('eldiiar')) {
       Navigator.pop(context, data);
+      return true;
     } else {
       await showCupertinoDialog<void>(
         context: context,
@@ -44,6 +45,7 @@ class _ScanViewDemoState extends State<ScanViewDemo> {
           );
         },
       );
+      return false;
     }
   }
 }

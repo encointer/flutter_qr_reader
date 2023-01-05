@@ -14,7 +14,9 @@ mixin QrReaderViewMixin<T extends StatefulWidget> on State<T> {
   final flashOpen = 'tool_flashlight_open.png';
   final flashClose = 'tool_flashlight_close.png';
 
-  Future<void> Function(String?, String?) get onScan;
+  /// if return is `true` controller will stop camera
+  /// if `false` controller continue work
+  Future<bool> Function(String?, String?) get onScan;
   TickerProvider get vsync;
 
   @override
@@ -58,15 +60,23 @@ mixin QrReaderViewMixin<T extends StatefulWidget> on State<T> {
   Future<void> _onQrBack(String? data, List<Offset> _, String? rawData) async {
     if (isScan == true) return;
     isScan = true;
-    await onScan(data, rawData);
-    await Future<void>.delayed(const Duration(seconds: 2));
-    isScan = false;
+    stopScan();
+    await onScan(data, rawData).then(
+      (value) async {
+        if (!value) {
+          isScan = false;
+          await Future<void>.delayed(const Duration(seconds: 2));
+          // initAnimation();
+          await controller.startCamera(_onQrBack);
+        }
+      },
+    );
   }
 
-  // void stopScan() {
-  //   clearAnimation();
-  //   controller.stopCamera();
-  // }
+  void stopScan() {
+    // clearAnimation();
+    controller.stopCamera();
+  }
 
   Future<bool?> setFlashlight() async {
     openFlashlight = await controller.setFlashlight() ?? false;
@@ -76,7 +86,8 @@ mixin QrReaderViewMixin<T extends StatefulWidget> on State<T> {
 
   @override
   void dispose() {
-    clearAnimation();
+    // controller.stopCamera();
+    // clearAnimation();
     super.dispose();
   }
 }

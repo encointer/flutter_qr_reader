@@ -65,8 +65,7 @@ mixin QrReaderViewMixin<T extends StatefulWidget> on State<T> {
       (value) async {
         if (!value) {
           isScan = false;
-          await Future<void>.delayed(const Duration(seconds: 2));
-          // initAnimation();
+          await Future<void>.delayed(const Duration(seconds: 1));
           await controller.startCamera(_onQrBack);
         }
       },
@@ -74,7 +73,6 @@ mixin QrReaderViewMixin<T extends StatefulWidget> on State<T> {
   }
 
   void stopScan() {
-    // clearAnimation();
     controller.stopCamera();
   }
 
@@ -86,8 +84,7 @@ mixin QrReaderViewMixin<T extends StatefulWidget> on State<T> {
 
   @override
   void dispose() {
-    // controller.stopCamera();
-    // clearAnimation();
+    clearAnimation();
     super.dispose();
   }
 }

@@ -49,8 +49,4 @@ class QrReaderViewController {
   Future<bool?> stopCamera() async {
     return _channel.invokeMethod('stopCamera');
   }
-
-  // Future<bool?> dispose() async {
-  //   return _channel.invokeMethod("dispose");
-  // }
 }

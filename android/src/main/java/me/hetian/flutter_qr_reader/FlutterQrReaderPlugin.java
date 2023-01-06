@@ -23,20 +23,12 @@ public class FlutterQrReaderPlugin implements FlutterPlugin,MethodCallHandler,Ac
   static private MethodChannel channel;
   static private FlutterPluginBinding flutterPluginBinding;
 
-
-
-//  private static final int REQUEST_CODE_CAMERA_PERMISSION = 3777;
+  // private static final int REQUEST_CODE_CAMERA_PERMISSION = 3777;
   private static final String CHANNEL_NAME = "me.hetian.flutter_qr_reader";
   private static final String CHANNEL_VIEW_NAME = "me.hetian.flutter_qr_reader.reader_view";
 
 
-  public FlutterQrReaderPlugin() {
-  }
-
-//  private interface PermissionsResult {
-//    void onSuccess();
-//    void onError();
-//  }
+  public FlutterQrReaderPlugin() {}
 
   /** Plugin registration. */
   public static void registerWith(Registrar registrar) {
@@ -66,16 +58,13 @@ public class FlutterQrReaderPlugin implements FlutterPlugin,MethodCallHandler,Ac
   }
 
   @Override
-  public void onDetachedFromActivity() {
-  }
+  public void onDetachedFromActivity() {}
 
   @Override
-  public void onReattachedToActivityForConfigChanges(ActivityPluginBinding binding) {
-  }
+  public void onReattachedToActivityForConfigChanges(ActivityPluginBinding binding) {}
 
   @Override
-  public void onDetachedFromActivityForConfigChanges() {
-  }
+  public void onDetachedFromActivityForConfigChanges() {}
 
 
   private void setup(
@@ -122,33 +111,4 @@ public class FlutterQrReaderPlugin implements FlutterPlugin,MethodCallHandler,Ac
       }
     }.execute(filePath);
   }
-
-//  @TargetApi(Build.VERSION_CODES.M)
-//  private void checkPermissions(final PermissionsResult result) {
-//    if (!(registrar.activity().checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED)) {
-//      registrar.addRequestPermissionsResultListener(new PluginRegistry.RequestPermissionsResultListener() {
-//        @Override
-//        public boolean onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-//          if (requestCode == REQUEST_CODE_CAMERA_PERMISSION) {
-//            for (int i = 0; i < permissions.length; i++) {
-//              String permission = permissions[i];
-//              int grantResult = grantResults[i];
-//
-//              if (permission.equals(Manifest.permission.CAMERA)) {
-//                if (grantResult == PackageManager.PERMISSION_GRANTED) {
-//                  result.onSuccess();
-//                } else {
-//                  result.onError();
-//                }
-//              }
-//            }
-//          }
-//          return false;
-//        }
-//      });
-//      registrar.activity().requestPermissions(new String[]{Manifest.permission.CAMERA}, REQUEST_CODE_CAMERA_PERMISSION);
-//    } else {
-//      result.onSuccess();
-//    }
-//  }
 }

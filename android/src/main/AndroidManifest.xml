@@ -6,7 +6,6 @@
     <uses-feature android:name="android.hardware.camera.autofocus" />
     <uses-feature android:name="android.hardware.camera.flash" />
 
-
     <!-- <application
         >
         <activity android:name="io.flutter.embedding.android.FlutterActivity"

@@ -84,6 +84,7 @@ mixin QrReaderViewMixin<T extends StatefulWidget> on State<T> {
 
   @override
   void dispose() {
+    // stopScan();
     clearAnimation();
     super.dispose();
   }

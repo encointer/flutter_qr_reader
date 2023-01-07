@@ -10,40 +10,43 @@ class QrReaderViewController {
   final MethodChannel _channel;
   late ReadChangeBack onQrBack;
 
-  Future _handleMessages(MethodCall call) async {
+  Future<void> _handleMessages(MethodCall call) async {
     switch (call.method) {
-      case "onQRCodeRead":
+      case 'onQRCodeRead':
         final points = <Offset>[];
-        if (call.arguments.containsKey("points")) {
-          final pointsStrs = call.arguments["points"];
-          for (String point in pointsStrs) {
-            final a = point.split(",");
-            points.add(Offset(double.tryParse(a.first)!, double.tryParse(a.last)!));
-          }
+        if ((call.arguments as Map).containsKey('points')) {
+          final pointsStrs = (call.arguments as Map)['points'] as List;
+          // ignore: cascade_invocations
+          pointsStrs.map((e) {
+            if (e is String) {
+              final a = e.split(',');
+              points.add(Offset(double.tryParse(a.first)!, double.tryParse(a.last)!));
+            }
+          });
         }
         String? rawData = '';
-        if (call.arguments.containsKey("rawData")) {
-          rawData = call.arguments["rawData"];
+        if ((call.arguments as Map).containsKey('rawData')) {
+          rawData = (call.arguments as Map)['rawData'] as String;
         }
 
-        this.onQrBack(call.arguments["text"], points, rawData);
+        onQrBack((call.arguments as Map)['text'] as String?, points, rawData);
         break;
     }
   }
 
   // 打开手电筒
   Future<bool?> setFlashlight() async {
-    return _channel.invokeMethod("flashlight");
+    return _channel.invokeMethod('flashlight');
   }
 
   // 开始扫码
   Future<bool?> startCamera(ReadChangeBack onQrBack) async {
     this.onQrBack = onQrBack;
-    return _channel.invokeMethod("startCamera");
+    return _channel.invokeMethod('startCamera');
   }
 
   // 结束扫码
   Future<bool?> stopCamera() async {
-    return _channel.invokeMethod("stopCamera");
+    return _channel.invokeMethod('stopCamera');
   }
 }

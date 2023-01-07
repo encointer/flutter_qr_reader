@@ -48,6 +48,5 @@ public final class OpenCamera {
   public String toString() {
     return "Camera #" + index + " : " + facing + ',' + orientation;
   }
-
 }
 

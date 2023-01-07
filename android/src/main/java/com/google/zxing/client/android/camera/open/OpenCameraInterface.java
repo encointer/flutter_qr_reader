@@ -28,8 +28,7 @@ public final class OpenCameraInterface {
 
   private static final String TAG = OpenCameraInterface.class.getName();
 
-  private OpenCameraInterface() {
-  }
+  private OpenCameraInterface() {}
 
   /** For {@link #open(int)}, means no preference for which google.zxing.client.android.android.com.google.zxing.client.android.camera to open. */
   public static final int NO_REQUESTED_CAMERA = -1;
@@ -91,10 +90,10 @@ public final class OpenCameraInterface {
     if (camera == null) {
       return null;
     }
+
     return new OpenCamera(index,
         camera,
         CameraFacing.values()[selectedCameraInfo.facing],
         selectedCameraInfo.orientation);
   }
-
 }

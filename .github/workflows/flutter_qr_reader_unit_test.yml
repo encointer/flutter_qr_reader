@@ -1,10 +1,13 @@
-name: Analyze code and Unit test
+name: Flutter Qr Reader Analyze code and Unit test
 
 on:
   push:
     branches: [master]
   pull_request:
     branches: [master]
+
+env:
+  FLUTTER_VERSION: "3.3.10"    
 
 jobs:
   flutter_test:
@@ -14,15 +17,15 @@ jobs:
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
         with:
-          flutter-version: "3.3.10"
+          flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: "stable"
       - run: flutter doctor
 
       - name: "Check fmt"
-        run: flutter format . --line-length 120 --set-exit-if-changed
+        run: flutter pub get && flutter format . --line-length 120 --set-exit-if-changed
 
       - name: "Analyze Code"
-        run: flutter pub get && flutter analyze  --fatal-warnings
+        run: flutter analyze  --fatal-warnings
 
       - name: "Run unit tests"
         run: flutter test 

@@ -31,7 +31,8 @@ jobs:
         with:
           api-level: 29
           arch: x86_64
-
+          script: echo "Generated AVD snapshot for caching."
+          
       - name: run integration test
         working-directory: ${{ env.EXAMPLE_DIRECTORY }}
         run: flutter drive --target=test_driver/app.dart

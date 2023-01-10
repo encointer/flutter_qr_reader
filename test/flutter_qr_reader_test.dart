@@ -1,18 +1,11 @@
-import 'package:flutter/services.dart';
+import 'package:flutter_qr_scan/flutter_qr_reader.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
-  const channel = MethodChannel('flutter_qr_reader');
+  TestWidgetsFlutterBinding.ensureInitialized();
 
-  setUp(() {
-    channel.setMockMethodCallHandler((MethodCall methodCall) async {
-      return '42';
-    });
+  test('getPlatformVersion', () {
+    final controller = QrReaderViewController(42);
+    expect(controller, isA<QrReaderViewController>());
   });
-
-  tearDown(() {
-    channel.setMockMethodCallHandler(null);
-  });
-
-  test('getPlatformVersion', () async {});
 }

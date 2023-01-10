@@ -1,0 +1,31 @@
+name: Example IOS integration test
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+jobs:
+  integration_test_ios:
+    runs-on: macos-12
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.3.10"
+          channel: stable
+      - run: flutter doctor -v
+      - run: flutter pub get
+      - run: cd example
+      
+      - uses: futureware-tech/simulator-action@v2
+        with:
+          model: "iPhone 14"
+          os_version: "16.0"
+      - run: flutter drive --target=test_driver/app.dart
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: my-artifact
+          path: ./screenshots/*

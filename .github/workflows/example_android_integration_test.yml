@@ -31,14 +31,15 @@ jobs:
         with:
           api-level: 29
           arch: x86_64
-          script: echo "Generated AVD snapshot for caching."
+          script: cd example && flutter drive --target=test_driver/app.dart
+          # script: echo "Generated AVD snapshot for caching."
           
-      - name: run integration test
-        working-directory: ${{ env.EXAMPLE_DIRECTORY }}
-        run: flutter drive --target=test_driver/app.dart
+      # - name: run integration test
+      #   working-directory: ${{ env.EXAMPLE_DIRECTORY }}
+      #   run: flutter drive --target=test_driver/app.dart
 
       - uses: actions/upload-artifact@v3
         if: always()
         with:
           name: my-artifact
-          path: ./screenshots/*
+          path: ./example/screenshots/*

@@ -1,0 +1,28 @@
+name: Build IOS
+
+on:
+  push:
+    branches: [master]
+  pull_request:
+    branches: [master]
+
+env:
+  FLUTTER_VERSION: "3.3.10"
+  EXAMPLE_DIRECTORY: example      
+
+jobs:
+  build_ios:
+    runs-on: macos-12
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: "stable"
+          architecture: x64
+      - run: flutter doctor
+      - run: flutter pub get
+
+      - name: flutter build ios
+        working-directory: ${{ env.EXAMPLE_DIRECTORY }}
+        run: flutter build ios --release --no-codesign

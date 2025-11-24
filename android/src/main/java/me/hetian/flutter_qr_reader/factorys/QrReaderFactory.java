@@ -1,13 +1,16 @@
 package me.hetian.flutter_qr_reader.factorys;
 
 import android.content.Context;
-import androidx.annotation.NonNull;
+import android.view.View;
+
 import io.flutter.plugin.common.BinaryMessenger;
-import io.flutter.plugin.common.StandardMessageCodec;
+import io.flutter.plugin.common.MethodCall;
+import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.platform.PlatformView;
 import io.flutter.plugin.platform.PlatformViewFactory;
-import me.hetian.flutter_qr_reader.views.QrReaderView;
-import java.util.Map;
+import io.flutter.plugin.common.StandardMessageCodec;
+
+import me.hetian.flutter_qr_reader.readerView.QRCodeReaderView;
 
 public class QrReaderFactory extends PlatformViewFactory {
 
@@ -18,10 +21,48 @@ public class QrReaderFactory extends PlatformViewFactory {
         this.messenger = messenger;
     }
 
-    @NonNull
     @Override
-    public PlatformView create(@NonNull Context context, int id, Object args) {
-        Map<String, Object> params = (Map<String, Object>) args;
-        return new QrReaderView(context, messenger, id, params);
+    public PlatformView create(Context context, int viewId, Object args) {
+        QRCodeReaderView qrView = new QRCodeReaderView(context);
+
+        // Attach a MethodChannel for this view
+        MethodChannel channel = new MethodChannel(
+                messenger,
+                "me.hetian.flutter_qr_reader.reader_view_" + viewId
+        );
+
+        channel.setMethodCallHandler(new MethodChannel.MethodCallHandler() {
+            @Override
+            public void onMethodCall(MethodCall call, MethodChannel.Result result) {
+                switch (call.method) {
+                    case "startCamera":
+                        qrView.startCamera();
+                        result.success(true);
+                        break;
+                    case "stopCamera":
+                        qrView.stopCamera();
+                        result.success(true);
+                        break;
+                    case "flashlight":
+                        boolean enabled = call.arguments() != null && (Boolean) call.arguments();
+                        qrView.setTorchEnabled(enabled);
+                        result.success(true);
+                        break;
+                    default:
+                        result.notImplemented();
+                        break;
+                }
+            }
+        });
+
+        return new PlatformView() {
+            @Override
+            public View getView() {
+                return qrView;
+            }
+
+            @Override
+            public void dispose() {}
+        };
     }
 }

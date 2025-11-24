@@ -28,7 +28,7 @@ jobs:
 
       - name: Get example app dependencies
         run: flutter pub get
-        working-directory: ${{ env.EXAMPLE_DIR }}
+        working-directory: ${{ env.EXAMPLE_DIRECTORY }}
 
       - name: "Check fmt"
         run: dart format . --line-length 120 --set-exit-if-changed

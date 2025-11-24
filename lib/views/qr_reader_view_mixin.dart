@@ -23,24 +23,25 @@ mixin QrReaderViewMixin<T extends StatefulWidget> on State<T> {
   void initState() {
     super.initState();
     animationController = AnimationController(vsync: vsync, duration: const Duration(milliseconds: 1000));
-    initAnimation();
+    unawaited(initAnimation());
   }
 
-  void initAnimation() {
+  Future<void> initAnimation() async {
     animationController
       ..addListener(_upState)
       ..addStatusListener((state) {
         if (state == AnimationStatus.completed) {
           timer = Timer(const Duration(seconds: 1), () {
-            animationController.reverse(from: 1);
+            unawaited(animationController.reverse(from: 1));
           });
         } else if (state == AnimationStatus.dismissed) {
           timer = Timer(const Duration(seconds: 1), () {
-            animationController.forward(from: 0);
+            unawaited(animationController.forward(from: 0));
           });
         }
-      })
-      ..forward(from: 0);
+      });
+
+    await animationController.forward(from: 0);
   }
 
   void clearAnimation() {
@@ -58,9 +59,9 @@ mixin QrReaderViewMixin<T extends StatefulWidget> on State<T> {
   }
 
   Future<void> _onQrBack(String? data, List<Offset> _, String? rawData) async {
-    if (isScan == true) return;
+    if (isScan) return;
     isScan = true;
-    stopScan();
+    await stopScan();
     await onScan(data, rawData).then(
       (value) async {
         if (!value) {
@@ -72,8 +73,8 @@ mixin QrReaderViewMixin<T extends StatefulWidget> on State<T> {
     );
   }
 
-  void stopScan() {
-    controller.stopCamera();
+  Future<void> stopScan() async {
+    await controller.stopCamera();
   }
 
   Future<bool?> setFlashlight() async {
@@ -84,7 +85,7 @@ mixin QrReaderViewMixin<T extends StatefulWidget> on State<T> {
 
   @override
   void dispose() {
-    // stopScan();
+    unawaited(stopScan());
     clearAnimation();
     super.dispose();
   }

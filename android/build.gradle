@@ -1,39 +1,30 @@
-group 'me.hetian.flutter_qr_reader'
-version '1.0-SNAPSHOT'
-
-buildscript {
-    repositories {
-        google()
-        jcenter()
-    }
-
-    dependencies {
-        classpath 'com.android.tools.build:gradle:3.2.1'
-    }
+plugins {
+    id "com.android.library"
+    id "org.jetbrains.kotlin.android"
 }
 
-rootProject.allprojects {
-    repositories {
-        google()
-        jcenter()
-    }
-}
-
-apply plugin: 'com.android.library'
+group = "me.hetian.flutter_qr_reader"
+version = "1.0.0"
 
 android {
-    compileSdkVersion 28
+    namespace "me.hetian.flutter_qr_reader"
+    compileSdkVersion 34
 
     defaultConfig {
-        minSdkVersion 16
+        minSdkVersion 21
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-    lintOptions {
-        disable 'InvalidPackage'
+
+    lint {
+        disable += "InvalidPackage"
     }
 }
 
+repositories {
+    google()
+    mavenCentral()
+}
 
 dependencies {
-    implementation('com.google.zxing:core:3.3.3')
+    implementation("com.google.zxing:core:3.3.3")
 }

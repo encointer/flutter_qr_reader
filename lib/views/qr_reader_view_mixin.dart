@@ -41,7 +41,7 @@ mixin QrReaderViewMixin<T extends StatefulWidget> on State<T> {
         }
       });
 
-      await animationController.forward(from: 0);
+    await animationController.forward(from: 0);
   }
 
   void clearAnimation() {

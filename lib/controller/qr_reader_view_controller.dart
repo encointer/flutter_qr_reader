@@ -15,8 +15,7 @@ class QrReaderViewController {
       case 'onQRCodeRead':
         final points = <Offset>[];
         if ((call.arguments as Map).containsKey('points')) {
-          ((call.arguments as Map)['points'] as List)
-          .map((e) {
+          ((call.arguments as Map)['points'] as List).map((e) {
             if (e is String) {
               final a = e.split(',');
               points.add(Offset(double.tryParse(a.first)!, double.tryParse(a.last)!));

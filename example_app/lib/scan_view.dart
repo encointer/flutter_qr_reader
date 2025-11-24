@@ -34,11 +34,11 @@ class _ScanViewDemoState extends State<ScanViewDemo> {
         context: context,
         builder: (context) {
           return CupertinoAlertDialog(
-            title: const Text('扫码结果'),
-            content: Text('$data\n$rawData'),
+            title: const Text('Scan Content'),
+            content: Text('data: $data\nrawData: $rawData'),
             actions: <Widget>[
               CupertinoDialogAction(
-                child: const Text('确认'),
+                child: const Text('Confirm'),
                 onPressed: () => Navigator.pop(context),
               )
             ],

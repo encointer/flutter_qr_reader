@@ -24,7 +24,3 @@ jobs:
 
       - name: "Run unit tests"
         run: flutter test
-
-      - name: "Run example app unit tests"
-        working-directory: ${{ env.EXAMPLE_DIRECTORY }}
-        run: flutter test

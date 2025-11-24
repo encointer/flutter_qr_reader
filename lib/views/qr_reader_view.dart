@@ -124,7 +124,7 @@ class QrcodeReaderViewState extends State<QrcodeReaderView> with TickerProviderS
                     ),
                   ],
                 ),
-              )
+              ),
             ],
           );
         },

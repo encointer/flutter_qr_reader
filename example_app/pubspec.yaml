@@ -10,18 +10,17 @@ environment:
   flutter: "3.35.0"
 
 dependencies:
+  cupertino_icons: ^1.0.2
   flutter:
     sdk: flutter
-
-  cupertino_icons: ^1.0.2
   permission_handler: ^12.0.1
   flutter_qr_scan:
     path: ../
 
 dev_dependencies:
-  flutter_test:
-    sdk: flutter
   flutter_driver:
+    sdk: flutter
+  flutter_test:
     sdk: flutter
   test: ^1.26.2
   very_good_analysis: ^10.0.0

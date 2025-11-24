@@ -58,7 +58,7 @@ mixin QrReaderViewMixin<T extends StatefulWidget> on State<T> {
   }
 
   Future<void> _onQrBack(String? data, List<Offset> _, String? rawData) async {
-    if (isScan == true) return;
+    if (isScan) return;
     isScan = true;
     stopScan();
     await onScan(data, rawData).then(

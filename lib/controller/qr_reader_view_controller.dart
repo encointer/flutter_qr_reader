@@ -30,7 +30,6 @@ class QrReaderViewController {
         }
 
         onQrBack((call.arguments as Map)['text'] as String?, points, rawData);
-        break;
     }
   }
 

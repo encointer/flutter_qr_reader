@@ -13,7 +13,6 @@ import 'helpers/mock_widgets.dart';
 /// background in the app bundle. Flutter does not yet support build configuration /-flavor dependant asset inclusion.
 ///
 void main() async {
-  // ignore: close_sinks
   final stream = PublishSubject<ImageProvider>();
 
   Future<String> dataHandler(String? msg) async {

@@ -9,8 +9,7 @@ import 'package:flutter_qr_scan/views/qr_reader_view_mixin.dart';
 /// Relevant privileges must be obtained before use
 class QrcodeReaderView extends StatefulWidget {
   const QrcodeReaderView({
-    super.key,
-    required this.onScan,
+    required this.onScan, super.key,
     this.headerWidget,
     this.boxLineColor = Colors.cyanAccent,
     this.helpWidget,

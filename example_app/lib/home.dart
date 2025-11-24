@@ -25,7 +25,7 @@ class _HomePageState extends State<HomePage> {
       body: SingleChildScrollView(
         child: Column(
           children: [
-            Row(),
+            const Row(),
             ElevatedButton(
               child: const Text('Request Permissions'),
               onPressed: () async {

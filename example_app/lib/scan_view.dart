@@ -40,7 +40,7 @@ class _ScanViewDemoState extends State<ScanViewDemo> {
               CupertinoDialogAction(
                 child: const Text('Confirm'),
                 onPressed: () => Navigator.pop(context),
-              )
+              ),
             ],
           );
         },

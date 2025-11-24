@@ -61,7 +61,7 @@ class _QrReaderViewState extends State<QrReaderView> {
         },
       );
     } else {
-      return const Text('平台暂不支持');
+      return const Text('Unsupported platform');
     }
   }
 

@@ -46,7 +46,7 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             ElevatedButton(
-              child: const Text('Open Page'),
+              child: const Text('Scan Page'),
               onPressed: () async {
                 await Navigator.push(
                   context,
@@ -62,7 +62,7 @@ class _HomePageState extends State<HomePage> {
             ),
             if (data != null) Text('$data\nrawData: $rawData'),
             ElevatedButton(
-              child: const Text('Start scan'),
+              child: const Text('Inline Scanner'),
               onPressed: () {
                 setState(() {
                   isOk = !isOk;

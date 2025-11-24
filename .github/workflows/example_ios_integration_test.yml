@@ -24,8 +24,8 @@ jobs:
       - run: flutter pub get
       - uses: futureware-tech/simulator-action@v2
         with:
-          model: "iPhone 14"
-          os_version: "18.0"
+          model: "iPhone 14iPhone 14 Pro Max"
+          os_version: "17.2"
 
       - name: run integration test
         working-directory: ${{ env.EXAMPLE_DIRECTORY }}

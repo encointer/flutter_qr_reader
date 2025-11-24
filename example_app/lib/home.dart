@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:developer';
 
 import 'package:example_app/scan_view.dart';
@@ -31,13 +32,13 @@ class _HomePageState extends State<HomePage> {
               onPressed: () async {
                 final status = await Permission.camera.request();
                 log(status.toString());
-                if (status.isGranted) {
+                if (status.isGranted && context.mounted) {
                   await showDialog<void>(
                     context: context,
                     builder: (context) {
                       return const AlertDialog(
-                        title: Text('ok'),
-                        content: Text('ok'),
+                        title: Text('Permissions are granted'),
+                        content: Text(''),
                       );
                     },
                   );
@@ -77,7 +78,7 @@ class _HomePageState extends State<HomePage> {
                   height: 350,
                   callback: (val) {
                     _controller = val;
-                    _controller?.startCamera(onScan);
+                    unawaited(_controller?.startCamera(onScan));
                   },
                 ),
               ),
@@ -93,6 +94,6 @@ class _HomePageState extends State<HomePage> {
       data = v;
       rawData = raw;
     });
-    _controller?.stopCamera();
+    unawaited(_controller?.stopCamera());
   }
 }

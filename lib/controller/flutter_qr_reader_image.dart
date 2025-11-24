@@ -13,7 +13,10 @@ class FlutterQrReader {
     try {
       final rest = await _channel.invokeMethod('imgQrCode', {'file': file.path});
       return rest as String;
-    } catch (e) {
+    } on PlatformException catch (e) {
+      log(e.toString());
+      return null;
+    } on MissingPluginException catch (e) {
       log(e.toString());
       return null;
     }

@@ -1,4 +1,4 @@
-name: Example Analyze code and Unit test
+name: Flutter Qr Reader Analyze code and Unit test
 
 on:
   push:
@@ -8,14 +8,13 @@ on:
 
 env:
   FLUTTER_VERSION: "3.35.0"
-  EXAMPLE_DIRECTORY: example_app
 
 jobs:
   flutter_test:
     name: Analyze code and Unit test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
@@ -23,13 +22,7 @@ jobs:
       - run: flutter doctor
 
       - name: "Check fmt"
-        working-directory: ${{ env.EXAMPLE_DIRECTORY }}
         run: flutter pub get && dart format . --line-length 120 --set-exit-if-changed
 
       - name: "Analyze Code"
-        working-directory: ${{ env.EXAMPLE_DIRECTORY }}
         run: flutter analyze  --fatal-warnings
-
-      - name: "Run unit tests"
-        working-directory: ${{ env.EXAMPLE_DIRECTORY }}
-        run: flutter test

@@ -4,24 +4,26 @@ import android.content.Context;
 
 import java.util.Map;
 
-import io.flutter.plugin.common.PluginRegistry;
+import androidx.annotation.NonNull;
+
+import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.StandardMessageCodec;
 import io.flutter.plugin.platform.PlatformView;
 import io.flutter.plugin.platform.PlatformViewFactory;
 import me.hetian.flutter_qr_reader.views.QrReaderView;
-import io.flutter.plugin.common.BinaryMessenger;
 
 public class QrReaderFactory extends PlatformViewFactory {
-    BinaryMessenger messenger;
+    private final @NonNull BinaryMessenger messenger;
 
-    public QrReaderFactory(BinaryMessenger messenger) {
+    public QrReaderFactory(@NonNull BinaryMessenger messenger) {
         super(StandardMessageCodec.INSTANCE);
         this.messenger = messenger;
     }
 
     @Override
-    public PlatformView create(Context context, int id, Object args) {
-        Map<String, Object> params = (Map<String, Object>) args;
-        return new QrReaderView(context,this.messenger, id, params);
+    public @NonNull PlatformView create(@NonNull Context context, int id, Object args) {
+        @SuppressWarnings("unchecked")
+        Map<String, Object> params = (args instanceof Map) ? (Map<String, Object>) args : null;
+        return new QrReaderView(context, messenger, id, params);
     }
 }

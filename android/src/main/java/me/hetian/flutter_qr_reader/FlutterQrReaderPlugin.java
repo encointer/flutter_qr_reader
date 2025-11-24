@@ -11,6 +11,8 @@ import me.hetian.flutter_qr_reader.factorys.QrReaderFactory;
 public class FlutterQrReaderPlugin implements FlutterPlugin, ActivityAware {
 
   private static final String CHANNEL_NAME = "me.hetian.flutter_qr_reader";
+  private static final String CHANNEL_VIEW_NAME = "me.hetian.flutter_qr_reader.reader_view";
+
   private FlutterPluginBinding flutterPluginBinding;
 
   @Override
@@ -27,7 +29,7 @@ public class FlutterQrReaderPlugin implements FlutterPlugin, ActivityAware {
   @Override
   public void onAttachedToActivity(@NonNull ActivityPluginBinding binding) {
     flutterPluginBinding.getPlatformViewRegistry().registerViewFactory(
-            "me.hetian.flutter_qr_reader/reader_view",
+            CHANNEL_VIEW_NAME,
             new QrReaderFactory(flutterPluginBinding.getBinaryMessenger())
     );
   }

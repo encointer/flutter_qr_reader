@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/rendering.dart';
@@ -36,8 +34,8 @@ class _QrReaderViewState extends State<QrReaderView> {
         hitTestBehavior: PlatformViewHitTestBehavior.transparent,
         viewType: 'me.hetian.flutter_qr_reader.reader_view',
         creationParams: {
-          'width': (widget.width! * window.devicePixelRatio).floor(),
-          'height': (widget.height! * window.devicePixelRatio).floor(),
+          'width': (widget.width! * View.of(context).devicePixelRatio).floor(),
+          'height': (widget.height! * View.of(context).devicePixelRatio).floor(),
           'extra_focus_interval': widget.autoFocusIntervalInMs,
           'extra_torch_enabled': widget.torchEnabled,
         },

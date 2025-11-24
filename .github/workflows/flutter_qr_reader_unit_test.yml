@@ -22,7 +22,7 @@ jobs:
       - run: flutter doctor
 
       - name: "Check fmt"
-        run: flutter pub get && flutter format . --line-length 120 --set-exit-if-changed
+        run: dart format . --line-length 120 --set-exit-if-changed
 
       - name: "Analyze Code"
         run: flutter analyze  --fatal-warnings

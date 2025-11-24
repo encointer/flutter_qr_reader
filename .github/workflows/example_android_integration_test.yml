@@ -40,7 +40,7 @@ jobs:
         with:
           api-level: 34
           arch: x86_64
-          script: cd example && flutter drive --target=test_driver/app.dart
+          script: cd example_app && flutter drive --target=test_driver/app.dart
 
       - uses: actions/upload-artifact@v4
         if: always()

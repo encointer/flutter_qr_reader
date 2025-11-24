@@ -24,7 +24,7 @@ jobs:
 
       - name: "Check fmt"
         working-directory: ${{ env.EXAMPLE_DIRECTORY }}
-        run: flutter pub get && flutter format . --line-length 120 --set-exit-if-changed
+        run: dart format . --line-length 120 --set-exit-if-changed
 
       - name: "Analyze Code"
         working-directory: ${{ env.EXAMPLE_DIRECTORY }}

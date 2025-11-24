@@ -8,6 +8,7 @@ on:
 
 env:
   FLUTTER_VERSION: "3.35.0"
+  EXAMPLE_DIRECTORY: example_app
 
 jobs:
   flutter_test:
@@ -19,7 +20,14 @@ jobs:
         with:
           flutter-version: ${{ env.FLUTTER_VERSION }}
           channel: "stable"
+
       - run: flutter doctor
+
+      - run: flutter pub get
+
+      - name: example app pub get
+        working-directory: ${{ env.EXAMPLE_DIRECTORY }}
+        run: flutter pub get
 
       - name: "Check fmt"
         run: flutter pub get && dart format . --line-length 120 --set-exit-if-changed

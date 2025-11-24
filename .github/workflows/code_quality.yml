@@ -1,4 +1,4 @@
-name: Flutter Qr Reader Analyze code and Unit test
+name: Code Quality
 
 on:
   push:
@@ -11,8 +11,8 @@ env:
   EXAMPLE_DIRECTORY: example_app
 
 jobs:
-  flutter_test:
-    name: Analyze code and Unit test
+  fmt_analyze:
+    name: Fmt and Analyze
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -23,14 +23,15 @@ jobs:
 
       - run: flutter doctor
 
-      - run: flutter pub get
-
-      - name: example app pub get
-        working-directory: ${{ env.EXAMPLE_DIRECTORY }}
+      - name: Get dependencies
         run: flutter pub get
 
+      - name: Get example app dependencies
+        run: flutter pub get
+        working-directory: ${{ env.EXAMPLE_DIR }}
+
       - name: "Check fmt"
-        run: flutter pub get && dart format . --line-length 120 --set-exit-if-changed
+        run: dart format . --line-length 120 --set-exit-if-changed
 
       - name: "Analyze Code"
         run: flutter analyze  --fatal-warnings

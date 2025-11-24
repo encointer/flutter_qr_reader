@@ -16,6 +16,7 @@ Future<void> takeScreenshot(
   final pixels = await driver.screenshot();
   final file = await File('screenshots/$name.png').create(recursive: true);
   await file.writeAsBytes(pixels);
+  // Test Function
   // ignore: avoid_print
   print('Screenshot $name created ================> ${file.path}');
 }

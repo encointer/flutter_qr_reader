@@ -13,7 +13,7 @@ env:
 
 jobs:
   integration_test_ios:
-    runs-on: macos-12
+    runs-on: macos-14
     steps:
       - uses: actions/checkout@v3
       - uses: subosito/flutter-action@v2
